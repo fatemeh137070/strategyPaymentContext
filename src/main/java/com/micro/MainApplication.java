@@ -10,17 +10,10 @@ public class MainApplication {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(MainApplication.class);
 
-
         PaymentContext paymentContext = context.getBean(PaymentContext.class);
 
-
-        paymentContext.setPaymentStrategy("cardPayment");
-        paymentContext.executePayment(100000);
-
-        paymentContext.setPaymentStrategy("cashPayment");
-        paymentContext.executePayment(50000);
-
-        paymentContext.setPaymentStrategy("onlinePayment");
-        paymentContext.executePayment(200000);
+        paymentContext.executePayment("cardPayment", 100000);
+        paymentContext.executePayment("cashPayment", 50000);
+        paymentContext.executePayment("onlinePayment", 200000);
     }
 }

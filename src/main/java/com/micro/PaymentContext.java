@@ -1,27 +1,22 @@
 package com.micro;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class PaymentContext {
 
-    private final ApplicationContext applicationContext;
-    private PaymentStrategy paymentStrategy;
+    private final Map<String, PaymentStrategy> paymentStrategies;
 
-    @Autowired
-    public PaymentContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public PaymentContext(Map<String, PaymentStrategy> paymentStrategies) {
+        this.paymentStrategies = paymentStrategies;
     }
 
-    public void setPaymentStrategy(String strategy) {
-        this.paymentStrategy = (PaymentStrategy) applicationContext.getBean(strategy);
-    }
-
-    public void executePayment(double amount) {
+    public void executePayment(String strategyType, double amount) {
+        PaymentStrategy paymentStrategy = paymentStrategies.get(strategyType);
         if (paymentStrategy == null) {
-            throw new IllegalStateException("هیچ استراتژی پرداختی انتخاب نشده است.");
+            throw new IllegalStateException("هیچ استراتژی پرداختی با این نام پیدا نشد.");
         }
         paymentStrategy.pay(amount);
     }
